@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="my-5">Artists you followed:</h1>
+
+        <div class="row row-cols3 g-2"> 
+
+            <div class="col">
+                {% for artist in artists.Name %}
+                <div class="col">
+                    <div class="p-3 border">
+                        {{artist}}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+
+        </div>
+{% endblock %}
