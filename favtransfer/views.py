@@ -55,6 +55,7 @@ class PlaylistView(View):
             self.at.spotify_query(link)
             self.at.follower()
             artistlist = self.at.artist_list
-            return render(request, 'playlist/playlist_list.html', {'link_to_print': link, 'artists': artistlist})
+            user_id = self.at.user_id
+            return render(request, 'playlist/playlist_list.html', {'link_to_print': link, 'artists': artistlist, 'user' : user_id})
         else:
             return render(request, 'playlist/playlist_form.html', {'form': form})

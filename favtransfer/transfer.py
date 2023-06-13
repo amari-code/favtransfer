@@ -11,6 +11,7 @@ class ArtistTransfer:
         self.SPOTIPY_CLIENT_ID = client_id
         self.SPOTIPY_CLIENT_SECRET = client_secret
         self.sp = self.spotify_auth()
+        self.user_id = self.sp.me()['id']
 
     def spotify_auth(self):
 
@@ -23,6 +24,7 @@ class ArtistTransfer:
 
     def spotify_query(self, pl):
         tmp = []
+        print(self.user_id)
         playlist = self.sp.playlist(pl)
         # pprint.pprint(playlist['tracks']['items'])
         for i in playlist['tracks']['items']:
