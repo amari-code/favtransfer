@@ -1,25 +1,31 @@
-from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyOAuth, SpotifyPKCE
 from .secret_id import client_secret, client_id
 import pandas as pd
 import spotipy
+from spotipy import util
 
 
 class ArtistTransfer:
 
-    def __init__(self):
+    def __init__(self, atk):
         self.artist_list = []
         self.SPOTIPY_CLIENT_ID = client_id
         self.SPOTIPY_CLIENT_SECRET = client_secret
-        self.sp = self.spotify_auth()
+        self.sp = self.spotify_auth(atk)
         self.user_id = self.sp.me()['id']
 
-    def spotify_auth(self):
+    def spotify_auth(self, atk):
 
         # Spotify authorization request
-        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.SPOTIPY_CLIENT_ID,
-                                                       client_secret=self.SPOTIPY_CLIENT_SECRET,
-                                                       redirect_uri='http://localhost:7777/callback',
-                                                       scope='playlist-read-private user-follow-modify'))
+        # sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=self.SPOTIPY_CLIENT_ID,
+        #                                                client_secret=self.SPOTIPY_CLIENT_SECRET,
+        #                                                redirect_uri='http://localhost:7777/callback',
+        #                                                scope='playlist-read-private user-follow-modify'))
+        # sp = spotipy.Spotify(auth_manager=SpotifyPKCE(client_id=self.SPOTIPY_CLIENT_ID,
+        #                                               redirect_uri='http://localhost:7777/callback',
+        #                                               scope='playlist-read-private user-follow-modify',
+        #                                               ))
+        sp = spotipy.Spotify(auth=atk)
         return sp
 
     def spotify_query(self, pl):
