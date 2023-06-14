@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import authorize_spotify, spotify_callback, logout_spotify
+from .views import authorize_spotify, spotify_callback, logout_spotify, home
 
 urlpatterns = [
     path('authorize-spotify/', authorize_spotify, name='authorize_spotify'),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('playlist-view', views.PlaylistView.as_view(), name="playlist.view"),
     path('logout-spotify/', logout_spotify, name='logout_spotify'),
     path('thanks/', logout_spotify, name='logout_spotify'),
+    path('', home, name='home')
 ]

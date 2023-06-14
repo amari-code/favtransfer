@@ -92,3 +92,6 @@ def logout_spotify(request):
     # Clear the session data
     request.session.clear()
     return render(request, 'playlist/thanks.html')
+
+def home(request):
+    return render(request, 'playlist/home.html')
