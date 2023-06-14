@@ -14,7 +14,8 @@
                 </div>
             {% endfor %}
             </div>
-
+        <a href="{% url 'playlist.new' %}" class="btn btn-secondary my-5">New Playlist</a>
+            <a href="{% url 'logout_spotify' %}">Logout from Spotify</a>
 
         </div>
 {% endblock %}

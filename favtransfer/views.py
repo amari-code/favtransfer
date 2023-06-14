@@ -39,10 +39,7 @@ from django.shortcuts import redirect
 #         return render(request, self.template_name, {"play" : play})
 
 
-class PlaylistView(View):
-
-    at = 0
-
+class PlaylistFView(View):
 
     def get(self, request):
 
@@ -51,6 +48,7 @@ class PlaylistView(View):
         return render(request, "playlist/playlist_form.html", {"form": form})
 
 
+class PlaylistView(View):
     def post(self, request):
         form = PlaylistForm(request.POST)
         if form.is_valid():
@@ -85,7 +83,12 @@ def spotify_callback(request):
         # You can also redirect the user to another page or perform additional actions here
         request.session['spotify_token'] = token_info
         print("success")
-        return redirect('/playlist', tok=token_info)
+        return redirect('/playlist')
     else:
         # Handle error or redirect to an error page
         return render(request, 'playlist/playlist_form.html', {'form': code})
+
+def logout_spotify(request):
+    # Clear the session data
+    request.session.clear()
+    return render(request, 'playlist/thanks.html')
