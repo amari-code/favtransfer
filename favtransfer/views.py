@@ -1,4 +1,4 @@
-import datetime
+import os
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -74,8 +74,10 @@ def spotify_callback(request):
 
 def logout_spotify(request):
     # Clear the session data
+    os.remove(f".cache-{request.session.get('key')}")
     request.session.clear()
     cache.clear()
+
     return render(request, 'playlist/thanks.html')
 
 def home(request):
