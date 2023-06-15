@@ -1,15 +1,16 @@
-
-from .secret_id import client_secret, client_id
 import pandas as pd
 import spotipy
+from decouple import config
 
 
 class ArtistTransfer:
 
     def __init__(self, atk):
         self.artist_list = []
-        self.SPOTIPY_CLIENT_ID = client_id
-        self.SPOTIPY_CLIENT_SECRET = client_secret
+        self.SPOTIPY_CLIENT_ID = config("client_id")
+        self.SPOTIPY_CLIENT_SECRET = config("client_secret")
+        print(self.SPOTIPY_CLIENT_ID)
+        print(self.SPOTIPY_CLIENT_SECRET)
         self.sp = self.spotify_auth(atk)
         self.user_id = self.sp.me()['id']
 

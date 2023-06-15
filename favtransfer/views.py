@@ -1,8 +1,7 @@
 import os
-
+from decouple import config
 from django.shortcuts import render
 from django.views.generic import View
-from .secret_id import client_secret, client_id
 from .forms import PlaylistForm
 from .transfer import ArtistTransfer
 import spotipy
@@ -11,18 +10,23 @@ from django.shortcuts import redirect
 from django.core.cache import cache
 from django.contrib.sessions.backends.db import SessionStore
 
+client_id = config("client_id")
+client_secret = config("client_secret")
+
+
 class PlaylistFView(View):
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
 
-        # print(f"args are: {access_token}")
         form = PlaylistForm()
         return render(request, "playlist/playlist_form.html", {"form": form})
 
 
 class PlaylistView(View):
 
-    def post(self, request):
+    @staticmethod
+    def post(request):
         form = PlaylistForm(request.POST)
         if form.is_valid():
             print(f"session key:{request.session.get('key')}")
@@ -38,17 +42,22 @@ class PlaylistView(View):
             at.follower()
             artistlist = at.artist_list
             user_id = at.user_id
-            return render(request, 'playlist/playlist_list.html', {'link_to_print': link, 'artists': artistlist, 'user' : user_id})
+            return render(request, 'playlist/playlist_list.html', {'link_to_print': link, 'artists': artistlist,
+                                                                   'user': user_id})
         else:
             return render(request, 'playlist/playlist_form.html', {'form': form})
 
+
 def authorize_spotify(request):
     scope = 'playlist-read-private user-follow-modify'  # Add required scopes based on your application's needs
-    sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri='http://localhost:8000/spotify-callback', scope=scope, cache_handler=spotipy.CacheHandler())
+    sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret,
+                            redirect_uri='http://localhost:8000/spotify-callback', scope=scope,
+                            cache_handler=spotipy.CacheHandler())
     print(f"sp_oauth: {sp_oauth}")
     auth_url = sp_oauth.get_authorize_url()
     print(f"auth url:{auth_url}")
     return redirect(auth_url)
+
 
 def spotify_callback(request):
     print(f"request: {request}")
@@ -72,6 +81,7 @@ def spotify_callback(request):
         # Handle error or redirect to an error page
         return render(request, 'playlist/playlist_form.html', {'form': code, 'session_key': session_key})
 
+
 def logout_spotify(request):
     # Clear the session data
     os.remove(f".cache-{request.session.get('key')}")
@@ -79,6 +89,7 @@ def logout_spotify(request):
     cache.clear()
 
     return render(request, 'playlist/thanks.html')
+
 
 def home(request):
     return render(request, 'playlist/home.html')
