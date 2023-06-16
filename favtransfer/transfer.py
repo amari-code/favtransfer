@@ -33,7 +33,7 @@ class ArtistTransfer:
         self.artist_list = artist_list_tmp.drop_duplicates()
         print(self.artist_list)
 
-    def follower(self, unfollow=0):
+    def follower(self, unfollow=False):
 
         if unfollow:
             for i in range(0, len(self.artist_list['ID']), 50):

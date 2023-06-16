@@ -41,8 +41,10 @@ class PlaylistView(View):
             at = ArtistTransfer(access_token)
 
             link = form.cleaned_data['playlist_link']
+            unfollow = form.cleaned_data['unfollow']
+            print(f"unfollow: {unfollow}")
             at.spotify_query(link)
-            at.follower()
+            at.follower(unfollow)
             artistlist = at.artist_list
             user_id = at.user_id
             return render(request, 'playlist/playlist_list.html', {'link_to_print': link, 'artists': artistlist,
@@ -75,7 +77,6 @@ def spotify_callback(request):
         # You can also redirect the user to another page or perform additional actions here
         request.session[f'spotify_token'] = token_info
         request.session['key'] = session_key
-        request.GET.pop("code")
         return redirect("playlist.new")
     else:
         # Handle error or redirect to an error page
