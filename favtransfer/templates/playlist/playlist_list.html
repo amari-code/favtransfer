@@ -8,14 +8,16 @@
             <div class="col">
                 {% for artist in artists.Name %}
                 <div class="col">
-                    <div class="p-3 border">
+                    <div class="border">
                         {{artist}}
                     </div>
                 </div>
             {% endfor %}
             </div>
-        <a href="{% url 'playlist.new' %}" class="btn btn-secondary my-5">New Playlist</a>
-            <a href="{% url 'logout_spotify' %}">Logout from Spotify</a>
-
         </div>
+            <div class="row"><a href="{% url 'playlist.new' %}" class="btn btn-secondary my-5">New Playlist</a></div>
+            <div class="row"><a href="{% url 'logout.spotify' %}">Logout from Spotify</a></div>
+
+
+
 {% endblock %}

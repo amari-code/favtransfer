@@ -1,6 +1,6 @@
 from django import forms
 
 
+# form where to paste the playlist
 class PlaylistForm(forms.Form):
-    name = forms.CharField(max_length=10)
     playlist_link = forms.CharField(max_length=100)

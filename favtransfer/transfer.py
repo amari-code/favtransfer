@@ -36,6 +36,8 @@ class ArtistTransfer:
     def follower(self, unfollow=0):
 
         if unfollow:
-            self.sp.user_unfollow_artists(self.artist_list['ID'])
+            for i in range(0, len(self.artist_list['ID']), 50):
+                self.sp.user_unfollow_artists(self.artist_list['ID'][i:i + 50])
         else:
-            self.sp.user_follow_artists(self.artist_list['ID'])
+            for i in range(0, len(self.artist_list['ID']), 50):
+                self.sp.user_follow_artists(self.artist_list['ID'][i:i+50])
