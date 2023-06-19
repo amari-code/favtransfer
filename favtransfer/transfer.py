@@ -2,6 +2,7 @@ import pandas as pd
 import spotipy
 from decouple import config
 
+# library containing a class to manage the Spotify authorization flow, the artist query and the follow action.
 
 class ArtistTransfer:
 
@@ -13,6 +14,7 @@ class ArtistTransfer:
         print(self.SPOTIPY_CLIENT_SECRET)
         self.sp = self.spotify_auth(atk)
         self.user_id = self.sp.me()['id']
+
 
     def spotify_auth(self, atk):
 

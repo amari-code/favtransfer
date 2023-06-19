@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-
+# retrieve the secret keys from the .env file
 SECRET_KEY = config("SECRET_KEY")
 
 

@@ -15,9 +15,11 @@ from .transfer import ArtistTransfer
 import os
 import spotipy
 
-
+# retrieve the secret keys from the .env file
 client_id = config("client_id")
 client_secret = config("client_secret")
+
+# app spotify scope definition
 scope = 'playlist-read-private user-follow-modify'
 
 
@@ -52,7 +54,7 @@ class PlaylistView(View):
         else:
             return render(request, 'playlist/playlist_form.html', {'form': form})
 
-
+# ask authorization to access the spotify user account
 def authorize_spotify(request):
 
     sp_oauth = SpotifyOAuth(client_id=client_id, client_secret=client_secret,
@@ -60,7 +62,7 @@ def authorize_spotify(request):
     auth_url = sp_oauth.get_authorize_url()
     return redirect(auth_url)
 
-
+# manage the callback and generate a local session key helpful in managing the spotify cache
 def spotify_callback(request):
     session = SessionStore()
     session.create()
@@ -73,16 +75,13 @@ def spotify_callback(request):
 
     if code:
         token_info = sp_oauth.get_access_token(code)
-        # Store the token_info in the session or database for future API requests
-        # You can also redirect the user to another page or perform additional actions here
         request.session[f'spotify_token'] = token_info
         request.session['key'] = session_key
         return redirect("playlist.new")
     else:
-        # Handle error or redirect to an error page
         return redirect("authorize_spotify")
 
-
+# clear the current user session. It doesn't actually logout from spotify because the session is stored in the browser
 def logout_spotify(request):
     os.remove(f".cache-{request.session.get('key')}")
     request.session.clear()
